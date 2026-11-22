@@ -1,9 +1,11 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
+const apiBaseUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:5000/api',
+    baseUrl: apiBaseUrl,
     prepareHeaders: (headers) => {
       const token = localStorage.getItem('token');
       if (token) {
@@ -47,7 +49,6 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ['Transaction'],
     }),
-    // NEW: Third-Party API Endpoint for Currency Exchange Rates
     getExchangeRates: builder.query({
       query: () => 'https://open.er-api.com/v6/latest/USD',
     }),
@@ -60,5 +61,5 @@ export const {
   useGetTransactionsQuery,
   useAddTransactionMutation,
   useDeleteTransactionMutation,
-  useGetExchangeRatesQuery, // <--- Exported the new third-party query hook
+  useGetExchangeRatesQuery,
 } = apiSlice;
